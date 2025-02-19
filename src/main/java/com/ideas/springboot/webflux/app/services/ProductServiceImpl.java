@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Date;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -44,5 +46,41 @@ public class ProductServiceImpl implements ProductService {
         products.subscribe(product -> logger.info("Name of product: " + product.getName() + " - created at: " + product.getCreatedAt()));
 
         return products;
+    }
+
+    @Override
+    public Flux<Product> findAllWithFull() {
+        return repository
+                .findAll()
+                .map(product -> {
+                    product.setName(product.getName().toUpperCase());
+                    return product;
+                }).repeat(5000);
+    }
+
+    // REST API Response
+    @Override
+    public Flux<Product> findAllWithFullRest() {
+        return repository.findAll()
+                .map(product -> {
+                    product.setName(product.getName().toUpperCase());
+                    return product;
+                });
+    }
+
+    @Override
+    public Mono<Product> findById(String id) {
+        return repository.findById(id).doOnNext(p -> logger.info("Producto: " + p.getName()));
+    }
+
+    @Override
+    public Mono<Product> save(Product product) {
+        product.setCreatedAt(new Date());
+        return repository.save(product);
+    }
+
+    @Override
+    public Mono<Void> delete(Product product) {
+        return repository.delete(product);
     }
 }
