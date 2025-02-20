@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Insert title here</title>
+</head>
+<body>
+    <div th:if="${param.error != null}" th:text="${param.error}"></div>
+    <div th:if="${param.success != null}" th:text="${param.success}"></div>
+
+    <h1 th:text="${title}"></h1>
+    <a th:href="@{/form}">Create Product</a>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>PRICE</th>
+            <th>CATEGORY</th>
+            <th>CREATION DATE</th>
+            <th>UPDATE</th>
+            <th>DELETE</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td>
+                <a th:href="@{/show/} + ${product.id}" th:text="${product.id}"></a>
+            </td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${#numbers.formatCurrency(product.price)}"></td>
+            <td th:text="${product.category.name}"></td>
+            <td th:text="${#calendars.format(product.createdAt, 'dd/MM/yyyy')}"></td>
+            <td>
+                <a th:href="@{/form-v2/} + ${product.id}">edit</a>
+            </td>
+            <td>
+                <a th:href="@{/delete/} + ${product.id}" onclick="return confirm('Are you sure you want to delete');">delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>
