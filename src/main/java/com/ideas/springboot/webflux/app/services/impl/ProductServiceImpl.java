@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Mono<Product> findById(String id) {
-        return repository.findById(id).doOnNext(p -> logger.info("Producto: " + p.getName()));
+        return repository.findById(id);
     }
 
     @Override
@@ -81,6 +81,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Mono<Void> delete(Product product) {
+        logger.info("Deleting Product: " + product.getId() + " " + product.getName());
+
         return repository.delete(product);
     }
 }
