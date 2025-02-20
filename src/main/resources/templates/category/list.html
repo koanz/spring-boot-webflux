@@ -9,7 +9,7 @@
     <div th:if="${param.success != null}" th:text="${param.success}"></div>
 
     <h1 th:text="${title}"></h1>
-    <a th:href="@{/form}">Create Product</a>
+    <a th:href="@{/form}">Create Category</a>
     <table>
         <thead>
         <tr>
@@ -22,16 +22,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.id}"></td>
-            <td th:text="${product.name}"></td>
-            <td th:text="${product.price}"></td>
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.name}"></td>
             <td th:text="${product.createdAt}"></td>
             <td>
-                <a th:href="@{/form-v2/} + ${product.id}">edit</a>
+                <a th:href="@{/form-v2/} + ${category.id}">edit</a>
             </td>
             <td>
-                <a th:href="@{/delete/} + ${product.id}" onclick="return confirm('Are you sure you want to delete');">delete</a>
+                <a th:href="@{/delete/} + ${category.id}" onclick="return confirm('Are you sure you want to delete');">delete</a>
             </td>
         </tr>
         </tbody>
